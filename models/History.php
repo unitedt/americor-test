@@ -2,7 +2,8 @@
 
 namespace app\models;
 
-use app\models\traits\ObjectNameTrait;
+use \yii\db\ActiveQuery;
+use \yii\db\ActiveRecord;
 use Yii;
 
 /**
@@ -23,28 +24,28 @@ use Yii;
  * @property Customer $customer
  * @property User $user
  */
-class History extends \yii\db\ActiveRecord
+class History extends ActiveRecord
 {
-    const EVENT_CREATED_TASK = 'created_task';
-    const EVENT_UPDATED_TASK = 'updated_task';
-    const EVENT_COMPLETED_TASK = 'completed_task';
+    public const EVENT_CREATED_TASK = 'created_task';
+    public const EVENT_UPDATED_TASK = 'updated_task';
+    public const EVENT_COMPLETED_TASK = 'completed_task';
 
-    const EVENT_INCOMING_SMS = 'incoming_sms';
-    const EVENT_OUTGOING_SMS = 'outgoing_sms';
+    public const EVENT_INCOMING_SMS = 'incoming_sms';
+    public const EVENT_OUTGOING_SMS = 'outgoing_sms';
 
-    const EVENT_INCOMING_CALL = 'incoming_call';
-    const EVENT_OUTGOING_CALL = 'outgoing_call';
+    public const EVENT_INCOMING_CALL = 'incoming_call';
+    public const EVENT_OUTGOING_CALL = 'outgoing_call';
 
-    const EVENT_INCOMING_FAX = 'incoming_fax';
-    const EVENT_OUTGOING_FAX = 'outgoing_fax';
+    public const EVENT_INCOMING_FAX = 'incoming_fax';
+    public const EVENT_OUTGOING_FAX = 'outgoing_fax';
 
-    const EVENT_CUSTOMER_CHANGE_TYPE = 'customer_change_type';
-    const EVENT_CUSTOMER_CHANGE_QUALITY = 'customer_change_quality';
+    public const EVENT_CUSTOMER_CHANGE_TYPE = 'customer_change_type';
+    public const EVENT_CUSTOMER_CHANGE_QUALITY = 'customer_change_quality';
 
     /**
      * @inheritdoc
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return '{{%history}}';
     }
@@ -52,7 +53,7 @@ class History extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['ins_ts'], 'safe'],
@@ -68,7 +69,7 @@ class History extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'id' => Yii::t('app', 'ID'),
@@ -86,7 +87,7 @@ class History extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getCustomer()
+    public function getCustomer(): ActiveQuery
     {
         return $this->hasOne(Customer::class, ['id' => 'customer_id']);
     }
@@ -94,7 +95,7 @@ class History extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getUser()
+    public function getUser(): ActiveQuery
     {
         return $this->hasOne(User::class, ['id' => 'user_id']);
     }
@@ -102,7 +103,7 @@ class History extends \yii\db\ActiveRecord
     /**
      * @return array
      */
-    public static function getEventTexts()
+    public static function getEventTexts(): array
     {
         return [
             self::EVENT_CREATED_TASK => Yii::t('app', 'Task created'),
