@@ -6,4 +6,14 @@ services:
       - ~/.composer-docker/cache:/root/.composer/cache:delegated
       - ./:/app:delegated
     ports:
-      - '8000:80'
+      - '8040:80'
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./custom/:/etc/mysql/conf.d/my.cnf
+#      - db:/var/lib/mysql
+    ports:
+      - "3306:3306"

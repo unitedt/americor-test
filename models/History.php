@@ -25,8 +25,6 @@ use Yii;
  */
 class History extends \yii\db\ActiveRecord
 {
-    use ObjectNameTrait;
-
     const EVENT_CREATED_TASK = 'created_task';
     const EVENT_UPDATED_TASK = 'updated_task';
     const EVENT_COMPLETED_TASK = 'completed_task';
@@ -42,6 +40,15 @@ class History extends \yii\db\ActiveRecord
 
     const EVENT_CUSTOMER_CHANGE_TYPE = 'customer_change_type';
     const EVENT_CUSTOMER_CHANGE_QUALITY = 'customer_change_quality';
+
+    public static $objectClasses = [
+        Customer::class,
+        Sms::class,
+        Task::class,
+        Call::class,
+        Fax::class,
+        User::class,
+    ];
 
     /**
      * @inheritdoc
@@ -90,7 +97,7 @@ class History extends \yii\db\ActiveRecord
      */
     public function getCustomer()
     {
-        return $this->hasOne(Customer::className(), ['id' => 'customer_id']);
+        return $this->hasOne(Customer::class, ['id' => 'customer_id']);
     }
 
     /**
@@ -98,7 +105,7 @@ class History extends \yii\db\ActiveRecord
      */
     public function getUser()
     {
-        return $this->hasOne(User::className(), ['id' => 'user_id']);
+        return $this->hasOne(User::class, ['id' => 'user_id']);
     }
 
     /**
@@ -182,4 +189,48 @@ class History extends \yii\db\ActiveRecord
         $detail = json_decode($this->detail);
         return isset($detail->data->{$attribute}) ? $detail->data->{$attribute} : null;
     }
+
+    /**
+     * @param $name
+     * @param bool $throwException
+     * @return mixed
+     */
+    public function getRelation($name, $throwException = true)
+    {
+        $getter = 'get' . $name;
+        $class = self::getClassNameByRelation($name);
+
+        if (!method_exists($this, $getter) && $class) {
+            return $this->hasOne($class, ['id' => 'object_id']);
+        }
+
+        return parent::getRelation($name, $throwException);
+    }
+
+    /**
+     * @param $className
+     * @return mixed
+     */
+    public static function getObjectByTableClassName($className)
+    {
+        if (method_exists($className, 'tableName')) {
+            return str_replace(['{', '}', '%'], '', $className::tableName());
+        }
+
+        return $className;
+    }
+
+    /**
+     * @param $relation
+     * @return mixed
+     */
+    public static function getClassNameByRelation($relation)
+    {
+        foreach (self::$objectClasses as $class) {
+            if (self::getObjectByTableClassName($class) === $relation) {
+                return $class;
+            }
+        }
+    }
+
 }

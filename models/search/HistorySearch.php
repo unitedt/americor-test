@@ -91,8 +91,8 @@ class HistorySearch extends History
             $query->where('0=1');
             return $dataProvider;
         }
-        $query->addSelect('history.*');
-        $query->with([
+        $query->addSelect(['history.*']);
+        $query->joinWith([
             'customer',
             'user',
             'sms',

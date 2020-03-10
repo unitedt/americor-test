@@ -19,18 +19,15 @@ use Yii;
  *
  * @property User $user
  */
-class Fax extends \yii\db\ActiveRecord
+class Fax extends Object
 {
-    const DIRECTION_INCOMING = 0;
-    const DIRECTION_OUTGOING = 1;
-
-    const TYPE_POA_ATC = 'poa_atc';
-    const TYPE_REVOCATION_NOTICE = 'revocation_notice';
+    public const TYPE_POA_ATC = 'poa_atc';
+    public const TYPE_REVOCATION_NOTICE = 'revocation_notice';
 
     /**
      * @inheritdoc
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return 'fax';
     }
@@ -38,7 +35,7 @@ class Fax extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['type'], 'required'],
@@ -52,7 +49,7 @@ class Fax extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'id' => Yii::t('app', 'ID'),
@@ -64,17 +61,9 @@ class Fax extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getUser()
-    {
-        return $this->hasOne(User::class, ['id' => 'user_id']);
-    }
-
-    /**
      * @return array
      */
-    public static function getTypeTexts()
+    public static function getTypeTexts(): array
     {
         return [
             self::TYPE_POA_ATC => Yii::t('app', 'POA/ATC'),
