@@ -17,6 +17,7 @@ abstract class Object extends ActiveRecord
         Task::class,
         Call::class,
         Fax::class,
+        Customer::class,
     ];
 
     public const DIRECTION_INCOMING = 0;

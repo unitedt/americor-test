@@ -5,13 +5,12 @@ namespace app\widgets\HistoryList\HistoryListObject;
 use app\widgets\HistoryList\helpers\HistoryListHelper;
 use app\widgets\HistoryList\HistoryListObject;
 use yii\web\View;
-use Yii;
 
 /**
- * Class Sms
+ * Class Task
  * @package app\widgets\HistoryList\HistoryListObject
  */
-class Sms extends HistoryListObject
+class Task extends HistoryListObject
 {
     /**
      * @param View $view
@@ -19,18 +18,14 @@ class Sms extends HistoryListObject
      */
     public function render(View $view): string
     {
+        $task = $this->model->task;
+
         return $view->render('_item_common', [
             'user' => $this->model->user,
             'body' => HistoryListHelper::getBodyByModel($this->model),
-            'footer' => $this->model->sms->direction === \app\models\Sms::DIRECTION_INCOMING ?
-                Yii::t('app', 'Incoming message from {number}', [
-                    'number' => $this->model->sms->phone_from ?? ''
-                ]) : Yii::t('app', 'Sent message to {number}', [
-                    'number' => $this->model->sms->phone_to ?? ''
-                ]),
-            'iconIncome' => $this->model->sms->direction === \app\models\Sms::DIRECTION_INCOMING,
+            'iconClass' => 'fa-check-square bg-yellow',
             'footerDatetime' => $this->model->ins_ts,
-            'iconClass' => 'icon-sms bg-dark-blue'
+            'footer' => isset($task->customerCreditor->name) ? "Creditor: " . $task->customerCreditor->name : ''
         ]);
     }
 }

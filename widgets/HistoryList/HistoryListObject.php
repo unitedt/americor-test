@@ -3,39 +3,56 @@
 namespace app\widgets\HistoryList;
 
 use app\models\History;
+use app\widgets\HistoryList\helpers\HistoryListHelper;
 use yii\web\View;
-use app\models\search\HistorySearch;
 
+/**
+ * Class HistoryListObject
+ * @package app\widgets\HistoryList
+ */
 class HistoryListObject
 {
     protected static $classMap = [
         \app\models\Sms::class => \app\widgets\HistoryList\HistoryListObject\Sms::class,
-        \app\models\Task::class => \app\widgets\HistoryList\HistoryListObject::class,
-        \app\models\Call::class => \app\widgets\HistoryList\HistoryListObject::class,
-        \app\models\Fax::class => \app\widgets\HistoryList\HistoryListObject::class,
+        \app\models\Task::class => \app\widgets\HistoryList\HistoryListObject\Task::class,
+        \app\models\Call::class => \app\widgets\HistoryList\HistoryListObject\Call::class,
+        \app\models\Fax::class => \app\widgets\HistoryList\HistoryListObject\Fax::class,
+        \app\models\Customer::class => \app\widgets\HistoryList\HistoryListObject\Customer::class,
     ];
 
     /**
-     * @var HistorySearch
+     * @var History
      */
     protected $model;
 
+    /**
+     * @param History $model
+     * @return HistoryListObject
+     */
     final public static function init(History $model): self
     {
         $modelClassName = History::getClassNameByRelation($model->object);
         return null !== $modelClassName ? new self::$classMap[$modelClassName]($model) : new self($model);
     }
 
+    /**
+     * HistoryListObject constructor.
+     * @param History $model
+     */
     protected function __construct(History $model)
     {
         $this->model = $model;
     }
 
-    public function render(View $view)
+    /**
+     * @param View $view
+     * @return string
+     */
+    public function render(View $view): string
     {
         return $view->render('_item_common', [
             'user' => $this->model->user,
-            'body' => $this->model->eventText,
+            'body' => HistoryListHelper::getBodyByModel($this->model),
             'bodyDatetime' => $this->model->ins_ts,
             'iconClass' => 'fa-gear bg-purple-light'
         ]);
