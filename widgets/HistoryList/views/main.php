@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ListView;
 use yii\widgets\Pjax;
+use \app\widgets\HistoryList\HistoryListObject;
 
 /* @var $this yii\web\View */
 /* @var $dataProvider \yii\data\ActiveDataProvider */
@@ -32,7 +33,10 @@ use yii\widgets\Pjax;
 
 <?php echo ListView::widget([
     'dataProvider' => $dataProvider,
-    'itemView' => '_item',
+    'itemView' => function ($model, $key, $index, $widget) {
+        $viewObject = HistoryListObject::init($model);
+        return $viewObject->render($this);
+    },
     'options' => [
         'tag' => 'ul',
         'class' => 'list-group'
