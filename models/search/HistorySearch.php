@@ -16,7 +16,7 @@ class HistorySearch extends History
     /**
      * @inheritdoc
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [[
@@ -41,7 +41,7 @@ class HistorySearch extends History
     /**
      * @return array
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'user_id' => \Yii::t('app', 'Agents'),
@@ -67,7 +67,7 @@ class HistorySearch extends History
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params): ActiveDataProvider
     {
         $query = History::find();
 
@@ -92,7 +92,7 @@ class HistorySearch extends History
             return $dataProvider;
         }
         $query->addSelect(['history.*']);
-        $query->joinWith([
+        $query->with([
             'customer',
             'user',
             'sms',
