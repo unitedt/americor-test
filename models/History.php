@@ -41,15 +41,6 @@ class History extends \yii\db\ActiveRecord
     const EVENT_CUSTOMER_CHANGE_TYPE = 'customer_change_type';
     const EVENT_CUSTOMER_CHANGE_QUALITY = 'customer_change_quality';
 
-    public static $objectClasses = [
-        Customer::class,
-        Sms::class,
-        Task::class,
-        Call::class,
-        Fax::class,
-        User::class,
-    ];
-
     /**
      * @inheritdoc
      */
@@ -226,7 +217,7 @@ class History extends \yii\db\ActiveRecord
      */
     public static function getClassNameByRelation($relation)
     {
-        foreach (self::$objectClasses as $class) {
+        foreach (Object::$classes as $class) {
             if (self::getObjectByTableClassName($class) === $relation) {
                 return $class;
             }
