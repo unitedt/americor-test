@@ -41,7 +41,7 @@ class Sms extends HistoryListObject
     public function getBody(): string
     {
         $sms = $this->getObjectModel();
-        return $sms->message ? $sms->message : '';
+        return $sms->message ?: '';
     }
 
     /**
