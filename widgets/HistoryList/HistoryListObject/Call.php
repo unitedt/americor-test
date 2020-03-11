@@ -24,7 +24,7 @@ class Call extends HistoryListObject
         return $view->render('_item_common', [
             'user' => $this->model->user,
             'content' => $call->comment ?? '',
-            'body' => HistoryListHelper::getBodyByModel($this->model),
+            'body' => $this->getBody(),
             'footerDatetime' => $this->model->ins_ts,
             'footer' => isset($call->applicant) ? "Called <span>{$call->applicant->name}</span>" : null,
             'iconClass' => $answered ? 'md-phone bg-green' : 'md-phone-missed bg-red',

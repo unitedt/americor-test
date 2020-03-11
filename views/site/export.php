@@ -49,7 +49,7 @@ ini_set('memory_limit', '2048M');
             'label' => Yii::t('app', 'Message'),
             'value' => function (History $model) {
                 $viewObject = HistoryListObject::init($model);
-                return strip_tags(HistoryListHelper::getBodyByModel($model));
+                return strip_tags($viewObject->getBody());
             }
         ]
     ],
