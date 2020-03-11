@@ -9,7 +9,6 @@
 
 use app\models\History;
 use app\widgets\Export\Export;
-use app\widgets\HistoryList\helpers\HistoryListHelper;
 use \app\widgets\HistoryList\HistoryListObject;
 
 $filename = 'history';

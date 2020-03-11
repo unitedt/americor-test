@@ -3,7 +3,6 @@
 namespace app\widgets\HistoryList;
 
 use app\models\History;
-use app\widgets\HistoryList\helpers\HistoryListHelper;
 use yii\web\View;
 
 /**

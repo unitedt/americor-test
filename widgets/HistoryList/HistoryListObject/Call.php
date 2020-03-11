@@ -2,7 +2,6 @@
 
 namespace app\widgets\HistoryList\HistoryListObject;
 
-use app\widgets\HistoryList\helpers\HistoryListHelper;
 use app\widgets\HistoryList\HistoryListObject;
 use yii\web\View;
 
