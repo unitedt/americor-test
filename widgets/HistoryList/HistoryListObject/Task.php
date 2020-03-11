@@ -22,10 +22,28 @@ class Task extends HistoryListObject
 
         return $view->render('_item_common', [
             'user' => $this->model->user,
-            'body' => HistoryListHelper::getBodyByModel($this->model),
+            'body' => $this->getBody(),
             'iconClass' => 'fa-check-square bg-yellow',
             'footerDatetime' => $this->model->ins_ts,
             'footer' => isset($task->customerCreditor->name) ? "Creditor: " . $task->customerCreditor->name : ''
         ]);
     }
+
+    /**
+     * @return string
+     */
+    public function getBody(): string
+    {
+        $task = $this->getObjectModel();
+        return $this->model->eventText . ': ' . ($task->title ?? '');
+    }
+
+    /**
+     * @return \app\models\Task
+     */
+    protected function getObjectModel(): \app\models\Task
+    {
+        return $this->model->task;
+    }
+
 }

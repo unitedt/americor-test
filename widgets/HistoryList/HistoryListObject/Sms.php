@@ -19,18 +19,38 @@ class Sms extends HistoryListObject
      */
     public function render(View $view): string
     {
+        $sms = $this->getObjectModel();
+
         return $view->render('_item_common', [
             'user' => $this->model->user,
-            'body' => HistoryListHelper::getBodyByModel($this->model),
-            'footer' => $this->model->sms->direction === \app\models\Sms::DIRECTION_INCOMING ?
+            'body' => $this->getBody(),
+            'footer' => $sms->direction === \app\models\Sms::DIRECTION_INCOMING ?
                 Yii::t('app', 'Incoming message from {number}', [
-                    'number' => $this->model->sms->phone_from ?? ''
+                    'number' => $sms->phone_from ?? ''
                 ]) : Yii::t('app', 'Sent message to {number}', [
-                    'number' => $this->model->sms->phone_to ?? ''
+                    'number' => $sms->phone_to ?? ''
                 ]),
-            'iconIncome' => $this->model->sms->direction === \app\models\Sms::DIRECTION_INCOMING,
+            'iconIncome' => $sms->direction === \app\models\Sms::DIRECTION_INCOMING,
             'footerDatetime' => $this->model->ins_ts,
             'iconClass' => 'icon-sms bg-dark-blue'
         ]);
     }
+
+    /**
+     * @return string
+     */
+    public function getBody(): string
+    {
+        $sms = $this->getObjectModel();
+        return $sms->message ? $sms->message : '';
+    }
+
+    /**
+     * @return \app\models\Sms
+     */
+    protected function getObjectModel(): \app\models\Sms
+    {
+        return $this->model->sms;
+    }
+
 }

@@ -19,11 +19,11 @@ class Fax extends HistoryListObject
      */
     public function render(View $view): string
     {
-        $fax = $this->model->fax;
+        $fax = $this->getObjectModel();
 
         return $view->render('_item_common', [
             'user' => $this->model->user,
-            'body' => HistoryListHelper::getBodyByModel($this->model) .
+            'body' => $this->getBody() .
                 ' - ' .
                 (isset($fax->document) ? \yii\helpers\Html::a(
                     Yii::t('app', 'view document'),
@@ -40,5 +40,13 @@ class Fax extends HistoryListObject
             'footerDatetime' => $this->model->ins_ts,
             'iconClass' => 'fa-fax bg-green'
         ]);
+    }
+
+    /**
+     * @return \app\models\Fax
+     */
+    protected function getObjectModel(): \app\models\Fax
+    {
+        return $this->model->fax;
     }
 }

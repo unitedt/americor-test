@@ -52,9 +52,17 @@ class HistoryListObject
     {
         return $view->render('_item_common', [
             'user' => $this->model->user,
-            'body' => HistoryListHelper::getBodyByModel($this->model),
+            'body' => $this->getBody(),
             'bodyDatetime' => $this->model->ins_ts,
             'iconClass' => 'fa-gear bg-purple-light'
         ]);
+    }
+
+    /**
+     * @return string
+     */
+    public function getBody(): string
+    {
+        return $this->model->eventText;
     }
 }

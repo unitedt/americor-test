@@ -18,7 +18,7 @@ class Call extends HistoryListObject
      */
     public function render(View $view): string
     {
-        $call = $this->model->call;
+        $call = $this->getObjectModel();
         $answered = $call && $call->status === \app\models\Call::STATUS_ANSWERED;
 
         return $view->render('_item_common', [
@@ -30,5 +30,22 @@ class Call extends HistoryListObject
             'iconClass' => $answered ? 'md-phone bg-green' : 'md-phone-missed bg-red',
             'iconIncome' => $answered && $call->direction === \app\models\Call::DIRECTION_INCOMING
         ]);
+    }
+
+    /**
+     * @return string
+     */
+    public function getBody(): string
+    {
+        $call = $this->getObjectModel();
+        return ($call ? $call->totalStatusText . ($call->getTotalDisposition(false) ? " <span class='text-grey'>" . $call->getTotalDisposition(false) . "</span>" : "") : '<i>Deleted</i> ');
+    }
+
+    /**
+     * @return \app\models\Call
+     */
+    protected function getObjectModel(): \app\models\Call
+    {
+        return $this->model->call;
     }
 }
